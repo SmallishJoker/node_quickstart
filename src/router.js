@@ -7,18 +7,25 @@
  * @FilePath: \node_express\router.js
  */
 const router = require("express").Router()
+const sendEmail = require("./utils/sendEmail")
+const app = require("express")()
 
 const Service = require("./service/userService")
 
-router.get("/", (req, res) => {
-    res.send(req.url)
-})
-
 router.post("/login", (req, res) => {
+    console.log(req.session);
     Service.QueryUsers(req.body).then(data => {
         res.status(200).send(data)
     }).catch(err => {
-        res.status(err).send(err)
+        res.status(500).send(err)
+    })
+})
+
+router.post("/sendemail", (req, res) => {
+    sendEmail.send(req.body.email).then(data => {
+        res.status(200).send({ ...data, ...{ sessionId: req.session.id } })
+    }).catch(err => {
+        res.status(500).send(err)
     })
 })
 

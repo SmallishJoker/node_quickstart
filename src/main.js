@@ -9,6 +9,9 @@
 const express = require("express")
 const cors = require("cors")
 const router = require("./router")
+const cookieParser = require('cookie-parser')
+const session = require('express-session')
+
 
 const app = express()
 
@@ -22,6 +25,26 @@ app.use(cors())
 // 使用express调用bodyParser的方法（bodyParser已被弃用）,必须在app.use(router)的前面
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
+
+
+// 使用session保存用户信息
+app.use(cookieParser('sessiontest'));
+app.use(session({
+    secret: 'sessiontest',//与cookieParser中的一致
+    resave: false,
+    name: "share",
+    saveUninitialized: true,
+    cookie: {
+        secure: false,
+        httpOnly: false,
+        maxAge: 1000 * 60 * 10
+    }
+}))
+
+// 路由拦截
+app.use(function (req, res, next) {
+    next();
+});
 
 // 使用express路由中间件
 app.use(router)
