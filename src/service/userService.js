@@ -16,14 +16,12 @@ exports.QueryUsers = function (conditions) {
             conditions = {}
         }
     }
-    console.log(conditions);
     return new Promise((resolve, reject) => {
         Model.User.find({ user_name: conditions.username }).then(data => {
-            console.log(data);
             if (data.length === 0) {
                 resolve({
                     status: 404,
-                    message: "用户不存在"
+                    message: "该邮箱还未注册账号，请注册后登录"
                 })
             }
             resolve({

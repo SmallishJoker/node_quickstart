@@ -8,12 +8,17 @@
  */
 const router = require("express").Router()
 const sendEmail = require("./utils/sendEmail")
-const app = require("express")()
 
 const Service = require("./service/userService")
 
 router.post("/login", (req, res) => {
     console.log(req.session);
+    if (req.body.verifyCode !== req.session.verifyCode) {
+        return res.status(200).send({
+            status: 500,
+            message: "验证码错误"
+        })
+    }
     Service.QueryUsers(req.body).then(data => {
         res.status(200).send(data)
     }).catch(err => {
@@ -22,8 +27,10 @@ router.post("/login", (req, res) => {
 })
 
 router.post("/sendemail", (req, res) => {
-    sendEmail.send(req.body.email).then(data => {
-        res.status(200).send({ ...data, ...{ sessionId: req.session.id } })
+    sendEmail.send(req.body.email).then((data) => {
+        console.log(data.verifyCode);
+        req.session.verifyCode = data.verifyCode
+        res.status(200).send(data.data)
     }).catch(err => {
         res.status(500).send(err)
     })

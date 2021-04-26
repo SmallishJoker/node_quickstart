@@ -7,10 +7,11 @@
  * @FilePath: \node_express\src\main.js
  */
 const express = require("express")
-const cors = require("cors")
-const router = require("./router")
+// const cors = require("cors")
 const cookieParser = require('cookie-parser')
-const session = require('express-session')
+const expreSession = require('express-session')
+const filter = require("./utils/filter")
+const router = require("./router")
 
 
 const app = express()
@@ -19,8 +20,8 @@ const app = express()
 // app.use("/public", express.static("./public")) // 资源文件前要加 /public localhost:3001/public/test.html
 // app.use(express.static("./public")) // 直接访问 localhost:3001/test.html
 
-// 使用cors进行跨域处理,必须在app.use(router)的前面
-app.use(cors())
+// 使用cors进行跨域处理,必须在app.use(router)的前面,无法携带cookie
+// app.use(cors())
 
 // 使用express调用bodyParser的方法（bodyParser已被弃用）,必须在app.use(router)的前面
 app.use(express.urlencoded({ extended: false }))
@@ -28,23 +29,15 @@ app.use(express.json())
 
 
 // 使用session保存用户信息
-app.use(cookieParser('sessiontest'));
-app.use(session({
-    secret: 'sessiontest',//与cookieParser中的一致
+app.use(cookieParser())
+app.use(expreSession({
+    secret: 'itcast',
     resave: false,
-    name: "share",
-    saveUninitialized: true,
-    cookie: {
-        secure: false,
-        httpOnly: false,
-        maxAge: 1000 * 60 * 10
-    }
+    saveUninitialized: true
 }))
 
 // 路由拦截
-app.use(function (req, res, next) {
-    next();
-});
+app.use(filter.RouterFilter)
 
 // 使用express路由中间件
 app.use(router)

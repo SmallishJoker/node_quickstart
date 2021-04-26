@@ -20,7 +20,7 @@ const transporter = nodeemailer.createTransport({
 });
 
 module.exports.send = (email) => {
-    const emailCode = function captchaNumber() {
+    let captchaNumber = function () {
         let num = [];
         for (let i = 0; i < 6; i++) {
             num[i] = parseInt(Math.random() * 10);
@@ -29,7 +29,9 @@ module.exports.send = (email) => {
     }
     //随机生成6位数字
 
-    const emailCotent = {
+    let emailCode = captchaNumber()
+
+    let emailCotent = {
         from: 'smallishjoker@qq.com', // 发件人地址
         to: '', // 收件人地址，多个收件人可以使用逗号分隔
         subject: 'SmaiilshJoker的个人博客网站---邮箱验证码', // 邮件标题
@@ -37,21 +39,24 @@ module.exports.send = (email) => {
                 <h1>您好：</h1>
                 <p style="font-size: 18px;color:#000;">
                     您的验证码为：
-                    <span style="font-size: 16px;color:#f00;"> <a>${emailCode()}</a>， </span>
+                    <span style="font-size: 16px;color:#f00;"> <a>${emailCode}</a>， </span>
                     您当前正在某某的个人博客网站注册账号，验证码告知他人将会导致数据信息被盗，请勿泄露
                 </p>
                 <p style="font-size: 1.5rem;color:#999;">5分钟内有效</p>
                 ` // 邮件内容
     };
 
-    return new Promise((resolv, reject) => {
+    return new Promise((resolve, reject) => {
         transporter.sendMail({ ...emailCotent, ...{ to: email } }, function (error, info) {
             if (error) {
                 reject(error)
             }
-            resolv({
-                status: 200,
-                message: "验证码已发送，请注意查收"
+            resolve({
+                data: {
+                    status: 200,
+                    message: "验证码已发送，请注意查收"
+                },
+                verifyCode: emailCode
             })
         });
     })
