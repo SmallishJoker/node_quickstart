@@ -1,7 +1,7 @@
 /*
  * @Author: joker
  * @Date: 2021-04-17 23:04:42
- * @LastEditTime: 2021-04-21 23:14:23
+ * @LastEditTime: 2021-04-26 23:20:35
  * @LastEditors: Please set LastEditors
  * @Description: user crud 
  * @FilePath: \node_express\src\service\userService.js
@@ -17,17 +17,28 @@ exports.QueryUsers = function (conditions) {
         }
     }
     return new Promise((resolve, reject) => {
-        Model.User.find({ user_name: conditions.username }).then(data => {
-            if (data.length === 0) {
+        Model.User.findOne({ email: conditions.email }).then(data => {
+            if (!data) {
+                let user = Model.User({
+                    user_name: `用户${new Date().getTime()}`,
+                    pass_word: `${new Date().getTime()}`,
+                    email: conditions.email
+                })
+                user.save((err, product) => {
+                    if (err) throw err
+                    resolve({
+                        status: 200,
+                        message: "登录成功",
+                        data: product,
+                    })
+                })
+            } else {
                 resolve({
-                    status: 404,
-                    message: "该邮箱还未注册账号，请注册后登录"
+                    status: 200,
+                    message: "登录成功",
+                    data: data,
                 })
             }
-            resolve({
-                status: 200,
-                message: "登录成功"
-            })
         }).catch(err => {
             console.log(err);
             reject(err)

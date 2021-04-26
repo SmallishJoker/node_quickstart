@@ -1,7 +1,7 @@
 /*
  * @Author: joker
  * @Date: 2021-04-24 17:31:48
- * @LastEditTime: 2021-04-24 18:02:21
+ * @LastEditTime: 2021-04-26 22:58:26
  * @LastEditors: Please set LastEditors
  * @Description: send email
  * @FilePath: \node_express\src\utils\sendEmail.js
@@ -22,7 +22,7 @@ const transporter = nodeemailer.createTransport({
 module.exports.send = (email) => {
     let captchaNumber = function () {
         let num = [];
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 4; i++) {
             num[i] = parseInt(Math.random() * 10);
         }
         return num.join('');
