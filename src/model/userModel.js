@@ -1,7 +1,7 @@
 /*
  * @Author: joker
  * @Date: 2021-04-17 22:57:07
- * @LastEditTime: 2021-04-26 23:20:52
+ * @LastEditTime: 2021-04-28 20:56:09
  * @LastEditors: Please set LastEditors
  * @Description: database model
  * @FilePath: \node_express\src\model.js
@@ -18,6 +18,7 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // 设计数据表结构
 const userSchema = new Schema({
+    _id: String,
     user_id: {
         type: ObjectId,
         required: true,
