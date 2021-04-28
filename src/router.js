@@ -8,8 +8,8 @@
  */
 const router = require("express").Router()
 const sendEmail = require("./utils/sendEmail")
-
-const Service = require("./service/userService")
+const userService = require("./service/userService")
+const articleService = require("./service/articleService")
 
 router.post("/login", (req, res) => {
     if (req.body.verifyCode !== req.session.verifyCode) {
@@ -18,11 +18,14 @@ router.post("/login", (req, res) => {
             message: "验证码不正确"
         })
     }
-    Service.QueryUsers(req.body).then(data => {
+    userService.QueryUsers(req.body).then(data => {
         req.session.user = data.data
         res.status(200).send(data)
     }).catch(err => {
-        res.status(500).send(err)
+        res.status(500).send({
+            status: 500,
+            message: "服务器错误"
+        })
     })
 })
 
@@ -31,7 +34,52 @@ router.post("/sendemail", (req, res) => {
         req.session.verifyCode = data.verifyCode
         res.status(200).send(data.data)
     }).catch(err => {
-        res.status(500).send(err)
+        res.status(500).send({
+            status: 500,
+            message: "服务器错误"
+        })
+    })
+})
+
+router.get("/getCategory", (req, res) => {
+    articleService.QueryCategorys().then(data => {
+        res.status(200).send({
+            status: 200,
+            data,
+        })
+    }).catch(err => {
+        res.status(500).send({
+            status: 500,
+            message: "服务器错误"
+        })
+    })
+})
+
+router.post("/getTag", (req, res) => {
+    articleService.QueryTags(req.body.tag_name).then(data => {
+        res.status(200).send({
+            status: 200,
+            data,
+        })
+    }).catch(err => {
+        res.status(500).send({
+            status: 500,
+            message: "服务器错误"
+        })
+    })
+})
+
+router.post("/saveArticle", (req, res) => {
+    articleService.SaveArticle({...req.body,...{user_info: req.session.user}}).then(data => {
+        res.status(200).send({
+            status: 200,
+            data,
+        })
+    }).catch(err => {
+        res.status(500).send({
+            status: 500,
+            message: "服务器错误"
+        })
     })
 })
 

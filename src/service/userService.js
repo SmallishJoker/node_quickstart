@@ -6,7 +6,10 @@
  * @Description: user crud 
  * @FilePath: \node_express\src\service\userService.js
  */
+const mongoose = require("mongoose")
 const Model = require("../model/userModel")
+
+const ObjectId = mongoose.Types.ObjectId
 
 exports.QueryUsers = function (conditions) {
     if (conditions === undefined) {
@@ -17,9 +20,10 @@ exports.QueryUsers = function (conditions) {
         }
     }
     return new Promise((resolve, reject) => {
-        Model.User.findOne({ email: conditions.email }).then(data => {
+        Model.User.findOne({ email: conditions.email }, { _id: 0 }).then(data => {
             if (!data) {
                 let user = Model.User({
+                    user_id: ObjectId(),
                     user_name: `用户${new Date().getTime()}`,
                     pass_word: `${new Date().getTime()}`,
                     email: conditions.email

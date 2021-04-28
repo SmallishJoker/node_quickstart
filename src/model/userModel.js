@@ -7,6 +7,7 @@
  * @FilePath: \node_express\src\model.js
  */
 const mongoose = require("mongoose")
+const ObjectId = mongoose.Types.ObjectId
 
 const url = 'mongodb://localhost:27017/test'
 
@@ -17,6 +18,10 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // 设计数据表结构
 const userSchema = new Schema({
+    user_id: {
+        type: ObjectId,
+        required: true,
+    },
     user_name: {
         type: String,
         required: true,
@@ -62,6 +67,8 @@ const userSchema = new Schema({
     },
 }, {
     versionKey: false,
+}, {
+    _id: false
 })
 
 const User = mongoose.model('user', userSchema) // 构造User模型
