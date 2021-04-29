@@ -1,7 +1,7 @@
 /*
  * @Author: joker
  * @Date: 2021-04-17 22:57:07
- * @LastEditTime: 2021-04-26 23:20:52
+ * @LastEditTime: 2021-04-28 20:56:00
  * @LastEditors: Please set LastEditors
  * @Description: database model
  * @FilePath: \node_express\src\model.js
@@ -18,6 +18,7 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // 设计数据表结构
 const categorySchema = new Schema({
+    _id: String,
     category_id: {
         type: ObjectId,
         required: true,
@@ -47,6 +48,7 @@ const Category = mongoose.model('categorys', categorySchema)
 exports.Category = Category
 
 const tagSchema = new Schema({
+    _id: String,
     tag_id: {
         type: ObjectId,
         required: true,
@@ -75,6 +77,7 @@ const Tag = mongoose.model('tags', tagSchema)
 exports.Tag = Tag
 
 const articleSchema = new Schema({
+    _id: String,
     article_id: {
         type: ObjectId,
         required: true,
@@ -104,29 +107,20 @@ const articleSchema = new Schema({
         }, // 阅读次数
         collect_count: {
             type: Number,
+            default: 0
         }, // 收藏计数
         comment_count: {
             type: Number,
+            default: 0
         }, // 评论计数
         like_count: {
             type: Number,
+            default: 0
         }, // 点赞计数
     },
-    user_info: {
-        type: Object
-    },
-    category: {
-        category_id: {
-            type: String,
-        },
-        category_name: {
-            type: String,
-        }
-    },
-    tags: [{
-        tag_id: String,
-        tag_name: String,
-    }],
+    user_info: Object,
+    category: Object,
+    tags: Array,
 }, {
     versionKey: false
 })
