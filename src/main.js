@@ -1,17 +1,19 @@
 /*
  * @Author: joker
  * @Date: 2021-04-17 21:24:18
- * @LastEditTime: 2021-04-21 23:00:18
+ * @LastEditTime: 2021-04-30 00:07:08
  * @LastEditors: Please set LastEditors
  * @Description: entry
  * @FilePath: \node_express\src\main.js
  */
+const createError = require('http-errors')
 const express = require("express")
 // const cors = require("cors")
 const cookieParser = require('cookie-parser')
 const expreSession = require('express-session')
-const filter = require("./utils/filter")
-const router = require("./router")
+// const expressJwt = require('express-jwt')
+const filter = require('./utils/filter')
+const router = require('./router')
 
 
 const app = express()
@@ -36,11 +38,24 @@ app.use(expreSession({
     saveUninitialized: true
 }))
 
+// app.use(expressJwt({
+//     secret: 'mes_qdhd_mobile_xhykjyxgs',
+//     algorithms: ["HS256"]
+// }).unless({
+//     path: ['/login', '/sendemail']//除了这个地址，其他的URL都需要验证
+// }));
+
 // 路由拦截
-app.all("*",filter.RouterFilter)
+app.all("*", filter.RouterFilter)
 
 // 使用express路由中间件
 app.use(router)
+
+// app.use(function (err, req, res, next) {
+//     if (err.status == 401) {
+//         return res.status(401).send('Unauthorized');
+//     }
+// });
 
 app.listen(3001, () => {
     console.log("loaclhost:3001");
