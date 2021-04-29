@@ -30,10 +30,16 @@ exports.QueryUsers = function (conditions) {
                 })
                 user.save((err, product) => {
                     if (err) throw err
+                    let _product = {}
+                    for (let key in product) {
+                        if (key !== "_id") {
+                            _product[key] = product[key]
+                        }
+                    }
                     resolve({
                         status: 200,
                         message: "登录成功",
-                        data: product,
+                        data: _product,
                     })
                 })
             } else {

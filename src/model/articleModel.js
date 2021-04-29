@@ -96,7 +96,13 @@ const articleSchema = new Schema({
         category_id: {
             type: String,
         },
-        ollect_count: {
+        cover_image: {
+            type: String,
+        }, // 封面大图
+        view_count: {
+            type: Number,
+        }, // 阅读次数
+        collect_count: {
             type: Number,
         }, // 收藏计数
         comment_count: {
