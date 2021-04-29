@@ -89,21 +89,27 @@ const articleSchema = new Schema({
     article_info: {
         title: {
             type: String,
+            required: true,
         },
         mark_content: {
             type: String,
+            required: true,
         },
         brief_content: {
             type: String,
+            required: true,
         },
         category_id: {
             type: String,
+            required: true,
         },
         cover_image: {
             type: String,
+            default: ""
         }, // 封面大图
         view_count: {
             type: Number,
+            default: 0
         }, // 阅读次数
         collect_count: {
             type: Number,
@@ -118,7 +124,7 @@ const articleSchema = new Schema({
             default: 0
         }, // 点赞计数
     },
-    user_info: Object,
+    author_user_info: Object,
     category: Object,
     tags: Array,
 }, {

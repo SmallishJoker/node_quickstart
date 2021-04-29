@@ -10,7 +10,7 @@ const RouterFilter = function (req, res, next) {
     // 解决跨域并允许携带cookie
     res.setHeader("Access-Control-Allow-Credentials", true)
     res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*")
-    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With,Content-Type")
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With,Content-Type, Authorization")
     res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE")
     res.setHeader("Content-Type", "application/json; charset=utf-8")
     res.setHeader("Access-Control-Allow-Credentials", true)
