@@ -37,7 +37,7 @@ app.use(expreSession({
 }))
 
 // 路由拦截
-app.use(filter.RouterFilter)
+app.all("*",filter.RouterFilter)
 
 // 使用express路由中间件
 app.use(router)
