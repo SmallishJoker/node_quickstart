@@ -40,7 +40,7 @@ module.exports.send = (email) => {
                 <p style="font-size: 18px;color:#000;">
                     您的验证码为：
                     <span style="font-size: 16px;color:#f00;"> <a>${emailCode}</a>， </span>
-                    您当前正在某某的个人博客网站注册账号，验证码告知他人将会导致数据信息被盗，请勿泄露
+                    您当前正在SmaiilshJoker的个人博客网站注册/登录账号，验证码告知他人将会导致数据信息被盗，请勿泄露
                 </p>
                 <p style="font-size: 1.5rem;color:#999;">5分钟内有效</p>
                 ` // 邮件内容
