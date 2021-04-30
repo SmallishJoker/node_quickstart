@@ -11,7 +11,6 @@ const express = require("express")
 // const cors = require("cors")
 const cookieParser = require('cookie-parser')
 const expreSession = require('express-session')
-// const expressJwt = require('express-jwt')
 const filter = require('./utils/filter')
 const router = require('./router')
 
@@ -38,24 +37,11 @@ app.use(expreSession({
     saveUninitialized: true
 }))
 
-// app.use(expressJwt({
-//     secret: 'mes_qdhd_mobile_xhykjyxgs',
-//     algorithms: ["HS256"]
-// }).unless({
-//     path: ['/login', '/sendemail']//除了这个地址，其他的URL都需要验证
-// }));
-
 // 路由拦截
 app.all("*", filter.RouterFilter)
 
 // 使用express路由中间件
 app.use(router)
-
-// app.use(function (err, req, res, next) {
-//     if (err.status == 401) {
-//         return res.status(401).send('Unauthorized');
-//     }
-// });
 
 app.listen(3001, () => {
     console.log("loaclhost:3001");

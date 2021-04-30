@@ -22,14 +22,16 @@ const RouterFilter = function (req, res, next) {
         return next()
     }
 
+    const URL = req.url
+
     if (URL === '/login' || URL === '/sendemail') {
         return next()
     }
 
     const authorization = req.headers['authorization'];
-    
-    if (!authorization) {
-        return next();
+
+    if (authorization === "undefined") {
+        return res.status(401).send('用户未登录')
     } else {
         token.verToken(authorization).then((data) => {
             req.data = data;

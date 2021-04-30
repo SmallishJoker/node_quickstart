@@ -13,15 +13,15 @@ const articleService = require("./service/articleService")
 const token = require("./utils/token")
 
 router.post("/login", (req, res) => {
-    // if (req.body.verifyCode !== req.session.verifyCode) {
-    //     return res.status(200).send({
-    //         status: 500,
-    //         message: "验证码不正确"
-    //     })
-    // }
+    if (req.body.verifyCode !== req.session.verifyCode) {
+        return res.status(200).send({
+            status: 500,
+            message: "验证码不正确"
+        })
+    }
     userService.QueryUsers(req.body).then(data => {
 
-        token.setToken(data.user_name, data.user_id).then((token) => {
+        token.setToken(data.user_email, data.user_id).then((token) => {
             req.session.user = data.data
             return res.status(200).send({
                 status: 200,
